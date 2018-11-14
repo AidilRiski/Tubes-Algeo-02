@@ -46,6 +46,8 @@ from pygame.locals import *
 # di-stretch terhadap sumbu x dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_2d_x(points, factor_k):
+    for i in range (0, len(points)):
+        points[i][0] *= factor_k
     return 0
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -55,6 +57,8 @@ def stretch_2d_x(points, factor_k):
 # di-stretch terhadap sumbu y dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_2d_y(points, factor_k):
+    for i in range (0, len(points)):
+        points[i][1] *= factor_k
     return 0
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -64,6 +68,8 @@ def stretch_2d_y(points, factor_k):
 # di-stretch terhadap sumbu x dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_x(points, factor_k):
+    for i in range (0, len(points)):
+        points[i][0] *= factor_k
     return 0
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -73,6 +79,8 @@ def stretch_3d_x(points, factor_k):
 # di-stretch terhadap sumbu y dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_y(points, factor_k):
+    for i in range (0, len(points)):
+        points[i][1] *= factor_k
     return 0
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -82,4 +90,6 @@ def stretch_3d_y(points, factor_k):
 # di-stretch terhadap sumbu z dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_z(points, factor_k):
+    for i in range (0, len(points)):
+        points[i][2] *= factor_k
     return 0
