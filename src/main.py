@@ -1,7 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-import sys
+import threading
 
 import pygame
 from pygame.locals import *
@@ -35,6 +35,11 @@ def Draw2D(points):
 
     glEnd()
 
+def InputHandler2D():
+    user_input = ''
+    while not user_input == 'quit':
+        user_input = input('Input: ')
+
 def main():
     program_mode = input('2D / 3D: ')
     jumlah_titik = 0
@@ -57,6 +62,9 @@ def main():
         display = (800, 600)
 
         pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+
+        input_thread = threading.Thread(target = InputHandler2D)
+        input_thread.start()
 
         while True:
             for event in pygame.event.get():
