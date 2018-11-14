@@ -57,7 +57,6 @@ def dilate_2d(points, factor_k):
         newPoint = []
         for tmE in transformation_matrix:
             sum = 0
-            print(tmE)
             for tmEVI, tmEVV in enumerate(tmE):
                 sum += tmEVV * point[tmEVI]
             newPoint.append(sum)
