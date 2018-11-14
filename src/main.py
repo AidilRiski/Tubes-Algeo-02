@@ -6,6 +6,10 @@ import threading
 import pygame
 from pygame.locals import *
 
+import dilation
+
+titik2D = []
+
 def DrawOrigin2D():
     glColor3f(1, 1, 1)
     glBegin(GL_LINES)
@@ -36,9 +40,16 @@ def Draw2D(points):
     glEnd()
 
 def InputHandler2D():
+    global titik2D
+
     user_input = ''
+    user_input_Arr = user_input.split()
     while not user_input == 'quit':
         user_input = input('Input: ')
+        user_input_Arr = user_input.split()
+        if user_input_Arr[0] == 'dilate':
+            titik2D = dilation.dilate_2d(titik2D, float(user_input_Arr[1]))
+
 
 def main():
     program_mode = input('2D / 3D: ')
@@ -51,12 +62,12 @@ def main():
     if program_mode == '2D':
 
         jumlah_titik = int(input('Jumlah titik: '))
-        titik = []
+        
         for i in range(0, jumlah_titik):
             input_x, input_y = input().split()
             input_x = float(input_x)
             input_y = float(input_y)
-            titik.append([input_x, input_y])
+            titik2D.append([input_x, input_y])
             
         pygame.init()
         display = (800, 600)
@@ -73,7 +84,7 @@ def main():
                     quit()
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
             DrawOrigin2D()
-            Draw2D(titik)
+            Draw2D(titik2D)
             pygame.display.flip()
     elif program_mode == '3D':
         pygame.init()

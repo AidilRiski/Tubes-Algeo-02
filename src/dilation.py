@@ -46,7 +46,24 @@ from pygame.locals import *
 # didilatasi terhadap titik (0, 0) dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def dilate_2d(points, factor_k):
-    return 0
+    transformation_matrix = [
+        [factor_k, 0],
+        [0, factor_k]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            print(tmE)
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter factor_k yang merupakan
