@@ -9,12 +9,7 @@ from pygame.locals import *
 #
 # Contoh:
 #
-# P = [
-#   [0, 0],
-#   [1, 0],
-#   [1, 1],
-#   [0, 1]
-# ]
+#
 # USAHAKAN TIAP TITIK DENGAN TITIK SELANJUTNYA HANYA BERBEDA
 # SATU POIN, CONTOH:
 #  [0, 0] dengan titik [2, 0] hanya berbeda di poin x.
@@ -46,6 +41,10 @@ from pygame.locals import *
 # ditranslasi sejauh dx dan dy.
 # Bonus : Menampilkan animasi perpindahan.
 def translate_2d(points, dx, dy):
+    for i in range (0,len(points)):
+            points[i][0] += dx;
+    for i in range (0,len(points)):
+            points[i][1] += dy;
     return 0
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -54,5 +53,13 @@ def translate_2d(points, dx, dy):
 # Fungsi ini mengembalikan nilai dari kumpulan titik-titik pada parameter yang sudah
 # ditranslasi sejauh dx, dy, dan dz.
 # Bonus : Menampilkan animasi perpindahan.
+
+
 def translate_3d(points, dx, dy, dz):
+    for i in range (0,len(points)):
+        points[i][0] += dx;
+    for i in range (0,len(points)):
+        points[i][1] += dy;
+    for i in range (0,len(points)):
+        points[i][2] += dz;
     return 0
