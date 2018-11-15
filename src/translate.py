@@ -41,12 +41,26 @@ from pygame.locals import *
 # ditranslasi sejauh dx dan dy.
 # Bonus : Menampilkan animasi perpindahan.
 def translate_2d(points, dx, dy):
-    for i in range (0,len(points)):
-            points[i][0] += dx;
-    for i in range (0,len(points)):
-            points[i][1] += dy;
-    return 0
-
+    transform_matrix = [
+            [1,0,dx],
+            [0,1,dy],
+            [0,0,1]
+    ]
+    translated_points = []
+    
+    for point in points:
+        translated_point = []
+        for tmE in transform_matrix:
+            sum = 0
+            point.append(1) #Dummy element
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            translated_point.append(sum)
+        translated_point = translated_point[0:2] #Remove Dummy Element
+        translated_points.append(translated_point)
+    return translated_points
+    
+    
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter dx, dy, dan dz, yang merupakan
 # jarak perpindahan pada sumbu x, sumbu y, dan sumbu z.
@@ -56,10 +70,21 @@ def translate_2d(points, dx, dy):
 
 
 def translate_3d(points, dx, dy, dz):
-    for i in range (0,len(points)):
-        points[i][0] += dx;
-    for i in range (0,len(points)):
-        points[i][1] += dy;
-    for i in range (0,len(points)):
-        points[i][2] += dz;
-    return 0
+    transform_matrix = [
+            [1,0,0,dx],
+            [0,1,0,dy],
+            [0,0,1,dz],
+            [0,0,0,1]]
+    translated_points = []
+    
+    for point in points:
+        translated_point = []
+        point.append(1) #Dummy element
+        for tmE in transform_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            translated_point.append(sum)
+        translated_point = translated_point[0:3] #Remove Dummy Element
+        translated_points.append(translated_point)
+    return translated_points
