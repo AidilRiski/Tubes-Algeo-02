@@ -7,6 +7,8 @@ import pygame
 from pygame.locals import *
 
 import dilation
+import reflect
+import rotate
 
 titik2D = []
 
@@ -53,6 +55,20 @@ def InputHandler2D():
         user_input_Arr = user_input.split()
         if user_input_Arr[0] == 'dilate':
             titik2D = dilation.dilate_2d(titik2D, float(user_input_Arr[1]))
+        elif user_input_Arr[0] == 'reflect':
+            if user_input_Arr[1] == 'y=x':
+                titik2D = reflect.reflect_2d_xy_normal(titik2D)
+            elif user_input_Arr[1] == 'y=-x':
+                titik2D = reflect.reflect_2d_xy_invert(titik2D)
+            elif user_input_Arr[1] == 'x':
+                titik2D = reflect.reflect_2d_x(titik2D)
+            elif user_input_Arr[1] == 'y':
+                titik2D = reflect.reflect_2d_y(titik2D)
+            else:
+                titik2D = reflect.reflect_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'rotate' :
+            titik2D = rotate.rotate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+            
 
     quit_state = True
 
