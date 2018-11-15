@@ -46,10 +46,23 @@ from pygame.locals import *
 # di-stretch terhadap sumbu x dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_2d_x(points, factor_k):
-    for i in range (0, len(points)):
-        points[i][0] *= factor_k
-    return 0
-
+    matrix_transform =[
+        [factor_k,0],
+       [0,1]
+    ]
+    
+    stretched_points = []
+    
+    for point in points:
+        stretched_point = []
+        for tmE in matrix_transform:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            stretched_point.append(sum)
+        stretched_points.append(stretched_point)
+        
+    return stretched_points
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 2 dimensi, lalu menerima parameter factor_k yang merupakan
 # konstanta stretch.
@@ -57,10 +70,23 @@ def stretch_2d_x(points, factor_k):
 # di-stretch terhadap sumbu y dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_2d_y(points, factor_k):
-    for i in range (0, len(points)):
-        points[i][1] *= factor_k
-    return 0
+     matrix_transform =[
+        [1,0],
+       [0,factor_k]
+     ]
+    
+     stretched_points = []
+    
+     for point in points:
+        stretched_point = []
+        for tmE in matrix_transform:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            stretched_point.append(sum)
+        stretched_points.append(stretched_point)
 
+     return stretched_points
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter factor_k yang merupakan
 # konstanta stretch.
@@ -68,9 +94,24 @@ def stretch_2d_y(points, factor_k):
 # di-stretch terhadap sumbu x dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_x(points, factor_k):
-    for i in range (0, len(points)):
-        points[i][0] *= factor_k
-    return 0
+     matrix_transform =[
+        [factor_k,0,0],
+       [0,1,0],
+       [0,0,1]
+     ]
+    
+     stretched_points = []
+    
+     for point in points:
+        stretched_point = []
+        for tmE in matrix_transform:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            stretched_point.append(sum)
+        stretched_points.append(stretched_point)
+
+     return stretched_points
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter factor_k yang merupakan
@@ -79,9 +120,24 @@ def stretch_3d_x(points, factor_k):
 # di-stretch terhadap sumbu y dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_y(points, factor_k):
-    for i in range (0, len(points)):
-        points[i][1] *= factor_k
-    return 0
+     matrix_transform =[
+        [1,0,0],
+       [0,factor_k,0],
+       [0,0,1]
+     ]
+    
+     stretched_points = []
+    
+     for point in points:
+        stretched_point = []
+        for tmE in matrix_transform:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            stretched_point.append(sum)
+        stretched_points.append(stretched_point)
+
+     return stretched_points
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter factor_k yang merupakan
@@ -90,6 +146,21 @@ def stretch_3d_y(points, factor_k):
 # di-stretch terhadap sumbu z dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def stretch_3d_z(points, factor_k):
-    for i in range (0, len(points)):
-        points[i][2] *= factor_k
-    return 0
+     matrix_transform =[
+        [1,0,0],
+       [0,1,0],
+       [0,0,factor_k]
+     ]
+    
+     stretched_points = []
+    
+     for point in points:
+        stretched_point = []
+        for tmE in matrix_transform:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            stretched_point.append(sum)
+        stretched_points.append(stretched_point)
+
+     return stretched_points
