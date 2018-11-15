@@ -46,7 +46,16 @@ from pygame.locals import *
 # direfleksi terhadap titik (px, py).
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d(points, px, py):
-    return 0
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        dx = px - point[0]
+        newPoint.append(point[0] + 2*dx)
+        dy = py - point[1]
+        newPoint.append(point[1] + 2*dy)
+        newPoints.append(newPoint)
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 2 dimensi.
@@ -54,7 +63,15 @@ def reflect_2d(points, px, py):
 # direfleksi terhadap sumbu x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_x(points):
-    return 0
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        newPoint.append(point[0])
+        newPoint.append(-1*point[1])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 2 dimensi.
@@ -62,7 +79,15 @@ def reflect_2d_x(points):
 # direfleksi terhadap sumbu y.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_y(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(-1*point[0])
+        newPoint.append(point[1])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 2 dimensi.
@@ -70,7 +95,15 @@ def reflect_2d_y(points):
 # direfleksi terhadap garis y = x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_xy_normal(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(point[1])
+        newPoint.append(point[0])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 2 dimensi.
@@ -78,7 +111,15 @@ def reflect_2d_xy_normal(points):
 # direfleksi terhadap garis y = -x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_xy_invert(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(-1*point[1])
+        newPoint.append(-1*point[0])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter px, py, dan pz yang merupakan
@@ -87,7 +128,19 @@ def reflect_2d_xy_invert(points):
 # direfleksi terhadap titik (px, py, pz).
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d(points, px, py, pz):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        dx = px - point[0]
+        newPoint.append(point[0] + 2*dx)
+        dy = py - point[1]
+        newPoint.append(point[1] + 2*dy)
+        dz = pz - point[2]
+        newPoint.append(point[2] + 2*dz)
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi.
@@ -95,7 +148,16 @@ def reflect_3d(points, px, py, pz):
 # direfleksi terhadap sumbu x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_x(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(point[0])
+        newPoint.append(-1*point[1])
+        newPoint.append(-1*point[2])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi.
@@ -103,7 +165,16 @@ def reflect_3d_x(points):
 # direfleksi terhadap sumbu y.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_y(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(-1*point[0])
+        newPoint.append(point[1])
+        newPoint.append(-1*point[2])
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi.
@@ -111,4 +182,13 @@ def reflect_3d_y(points):
 # direfleksi terhadap sumbu z.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_z(points):
-    return 0
+    newPoints = []
+
+    for point in points :
+        newPoint = []
+        newPoint.append(-1*point[0])
+        newPoint.append(-1*point[1])
+        newPoint.append(point[2])
+        newPoints.append(newPoint)
+
+    return newPoints
