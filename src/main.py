@@ -1,5 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
 import threading
 import random
@@ -13,6 +14,7 @@ import rotate
 import translate
 
 titik2D = []
+target2D = []
 
 
 #PERHATIKAN URUTAN
@@ -44,6 +46,11 @@ faces = [
 
 quit_state = False
 program_mode = ''
+in_animation = False
+
+deltaTime = 0
+tolerance = 0.01
+speed = 3 #PX / S
 
 def DrawOrigin2D():
     glBegin(GL_LINES)
@@ -102,13 +109,53 @@ def Draw3D():
         glEnd()
         faceNum += 1
 
-    
+def Animate2D(currentPoints, targetPoints):
+    global in_animation
+    oldPoints = currentPoints.copy()
 
-    
+    for cI, cPoint in enumerate(currentPoints):
+            Animation2D(cPoint, targetPoints[cI], oldPoints[cI])
 
+
+def Animation2D(currentPoint, targetPoint, oldPoint):
+    global in_animation
+    global deltaTime
+
+    directionVector = [
+        targetPoint[0] - oldPoint[0],
+        targetPoint[1] - oldPoint[1],
+    ]
+
+    length = ((directionVector[0] * directionVector[0]) + (directionVector[1] * directionVector[1]))**(1.0 / 2)
+
+    if length > 0 :
+        directionVector = [
+            directionVector[0] / length,
+            directionVector[1] / length
+        ]
+
+        length_vector = [
+            targetPoint[0] - currentPoint[0],
+            targetPoint[1] - currentPoint[1],
+        ]
+
+        xFlag = abs(length_vector[0]) <= tolerance
+        yFlag = abs(length_vector[1]) <= tolerance
+
+        if xFlag:
+            currentPoint[0] = targetPoint[0]
+        else:
+            currentPoint[0] += directionVector[0] * (float(speed) * deltaTime)
+
+        if yFlag:
+            currentPoint[1] = targetPoint[1]
+        else:
+            currentPoint[1] += directionVector[1] * (float(speed) * deltaTime)
+    
 def InputHandler2D():
     global quit_state
     global titik2D
+    global target2D
 
     user_input = ''
     user_input_Arr = user_input.split()
@@ -116,23 +163,22 @@ def InputHandler2D():
         user_input = input('Input: ')
         user_input_Arr = user_input.split()
         if user_input_Arr[0] == 'dilate':
-            titik2D = dilation.dilate_2d(titik2D, float(user_input_Arr[1]))
+            target2D = dilation.dilate_2d(titik2D, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'reflect':
             if user_input_Arr[1] == 'y=x':
-                titik2D = reflect.reflect_2d_xy_normal(titik2D)
+                target2D = reflect.reflect_2d_xy_normal(titik2D)
             elif user_input_Arr[1] == 'y=-x':
-                titik2D = reflect.reflect_2d_xy_invert(titik2D)
+                target2D = reflect.reflect_2d_xy_invert(titik2D)
             elif user_input_Arr[1] == 'x':
-                titik2D = reflect.reflect_2d_x(titik2D)
+                target2D = reflect.reflect_2d_x(titik2D)
             elif user_input_Arr[1] == 'y':
-                titik2D = reflect.reflect_2d_y(titik2D)
+                target2D = reflect.reflect_2d_y(titik2D)
             else:
-                titik2D = reflect.reflect_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
+                target2D = reflect.reflect_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
         elif user_input_Arr[0] == 'rotate' :
-            titik2D = rotate.rotate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+            target2D = rotate.rotate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
         elif user_input_Arr[0] == 'translate':
-            titik2D = translate.translate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
-            
+            target2D = translate.translate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
 
     quit_state = True
 
@@ -158,6 +204,11 @@ def InputHandler3D():
 def main():
     global quit_state
     global program_mode
+    global deltaTime
+
+    global titik2D
+    global target2D
+    global in_animation
 
     program_mode = input('2D / 3D: ')
     jumlah_titik = 0
@@ -175,6 +226,8 @@ def main():
             input_x = float(input_x)
             input_y = float(input_y)
             titik2D.append([input_x, input_y])
+
+        target2D = titik2D
             
         pygame.init()
         display = (800, 600)
@@ -198,7 +251,14 @@ def main():
         glOrtho(xMin, xMax, yMin, yMax, 500, -500)
         glMatrixMode(GL_MODELVIEW)
 
+        oldTime = glutGet(GLUT_ELAPSED_TIME)
+
         while not quit_state:
+            #SET DELTA TIME
+            currentTime = glutGet(GLUT_ELAPSED_TIME)
+            deltaTime = (currentTime - oldTime) / 1000
+            oldTime = glutGet(GLUT_ELAPSED_TIME)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit_state = True
@@ -239,10 +299,20 @@ def main():
             
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
             DrawOrigin2D()
+
+            #print(deltaTime)
+            #titik2D[0][0] += speed * deltaTime
+
+            in_animation = not (titik2D == target2D)
+
+            if (in_animation):
+                Animate2D(titik2D, target2D)
+
             Draw2D(titik2D)
             pygame.display.flip()
                 
     elif program_mode == '3D':
+        oldTime = 0
         pygame.init()
         display = (800, 600)
         
@@ -268,8 +338,13 @@ def main():
         gluPerspective(0, display[0]/display[1], 0.01, 50)
 
         glEnable(GL_DEPTH_TEST)
-        
+
         while not quit_state:
+            #SET DELTA TIME
+            currentTime = glutGet(GLUT_ELAPSED_TIME)
+            deltaTime = (currentTime - oldTime) / 1000
+            oldTime = glutGet(GLUT_ELAPSED_TIME)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit_state = True
