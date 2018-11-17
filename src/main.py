@@ -50,7 +50,11 @@ in_animation = False
 
 deltaTime = 0
 tolerance = 0.01
-speed = 3 #PX / S
+speed = 5 #PX / S
+rotation_speed = 2 #DG / S
+
+is_rotation = False
+rotation_point2d = []
 
 def DrawOrigin2D():
     glBegin(GL_LINES)
@@ -111,18 +115,19 @@ def Draw3D():
 
 def Animate2D(currentPoints, targetPoints):
     global in_animation
-    oldPoints = currentPoints.copy()
+    global rotation_point2d
 
+    oldPoints = currentPoints.copy()
+    
     maxDistance = 0
 
     for cI, cPoint in enumerate(currentPoints):
         if ((((cPoint[0] - targetPoints[cI][0]) ** 2) + ((cPoint[1] - targetPoints[cI][1]) ** 2)) ** (1.00 / 2)) > maxDistance:
             maxDistance = ((((cPoint[0] - targetPoints[cI][0]) ** 2) + ((cPoint[1] - targetPoints[cI][1]) ** 2)) ** (1.00 / 2))
-
+    
     for cI, cPoint in enumerate(currentPoints):
         if maxDistance > 0 :
             Animation2D(cPoint, targetPoints[cI], oldPoints[cI], maxDistance)
-
 
 def Animation2D(currentPoint, targetPoint, oldPoint, maxDistance):
     global in_animation
@@ -158,11 +163,39 @@ def Animation2D(currentPoint, targetPoint, oldPoint, maxDistance):
             currentPoint[1] = targetPoint[1]
         else:
             currentPoint[1] += directionVector[1] * (float(speed) * deltaTime)
+
+def AnimationRotational2D(currentPoints, targetPoints, rotation_point):
+    global in_animation
+    global deltaTime
+
+    global titik2D
+
+    global is_rotation
+    global rotation_speed
+    global rotation_point2d
+
+    p_sum = 0
+
+    for cI, cPoint in enumerate(currentPoints):
+      p_sum += abs(cPoint[0] - targetPoints[cI][0]) + abs(cPoint[1] - targetPoints[cI][1])
+
+    rFlag = p_sum <= ((tolerance * 2) * len(currentPoints))
+
+    if not rFlag :
+        currentPoints = rotate.rotate_2d(currentPoints, float(rotation_speed), rotation_point2d[0], rotation_point2d[1])
+    else :
+        currentPoints = targetPoints
+        is_rotation = False
+
+    return currentPoints
     
 def InputHandler2D():
     global quit_state
     global titik2D
     global target2D
+
+    global is_rotation
+    global rotation_point2d
 
     user_input = ''
     user_input_Arr = user_input.split()
@@ -184,6 +217,8 @@ def InputHandler2D():
                 target2D = reflect.reflect_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
         elif user_input_Arr[0] == 'rotate' :
             target2D = rotate.rotate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+            rotation_point2d = [float(user_input_Arr[2]), float(user_input_Arr[3])]
+            is_rotation = True
         elif user_input_Arr[0] == 'translate':
             target2D = translate.translate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
 
@@ -216,6 +251,7 @@ def main():
     global titik2D
     global target2D
     global in_animation
+    global is_rotation
 
     program_mode = input('2D / 3D: ')
     jumlah_titik = 0
@@ -312,8 +348,11 @@ def main():
 
             in_animation = not (titik2D == target2D)
 
-            if (in_animation):
-                Animate2D(titik2D, target2D)
+            if in_animation:
+                if is_rotation:
+                    titik2D = AnimationRotational2D(titik2D, target2D, rotation_point2d)
+                else:
+                    Animate2D(titik2D, target2D)
 
             Draw2D(titik2D)
             pygame.display.flip()
