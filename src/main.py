@@ -10,6 +10,7 @@ from pygame.locals import *
 import dilation
 import reflect
 import rotate
+import translate
 
 titik2D = []
 
@@ -30,18 +31,19 @@ faces = [
     
     [0, 1, 2, 3],
 
-    [0, 1, 6, 5],
+    [2, 3, 4, 7],
 
     [1, 2, 7, 6],
 
-    [2, 3, 4, 7],
-
     [3, 0, 5, 4],
+
+    [0, 1, 6, 5],
 
     [4, 5, 6, 7],
 ]
 
 quit_state = False
+program_mode = ''
 
 def DrawOrigin2D():
     glBegin(GL_LINES)
@@ -128,12 +130,34 @@ def InputHandler2D():
                 titik2D = reflect.reflect_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
         elif user_input_Arr[0] == 'rotate' :
             titik2D = rotate.rotate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+        elif user_input_Arr[0] == 'translate':
+            titik2D = translate.translate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
+            
+
+    quit_state = True
+
+def InputHandler3D():
+    global quit_state
+    global titik3D
+
+    user_input = ''
+    user_input_Arr = user_input.split()
+    while not user_input == 'quit':
+        user_input = input('Input: ')
+        user_input_Arr = user_input.split()
+        if user_input_Arr[0] == 'dilate':
+            titik3D = dilation.dilate_3d(titik2D, float(user_input_Arr[1]))
+        elif user_input_Arr[0] == 'rotate' :
+            titik3D = rotate.rotate_3d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4]))
+        elif user_input_Arr[0] == 'translate':
+            titik3D = translate.translate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
             
 
     quit_state = True
 
 def main():
     global quit_state
+    global program_mode
 
     program_mode = input('2D / 3D: ')
     jumlah_titik = 0
@@ -180,15 +204,16 @@ def main():
                     quit_state = True
                     pygame.quit()
                     quit()
+            
             if (pygame.key.get_pressed()[K_LEFT]):
-                glTranslatef(0.0001, 0, 0)
-            elif(pygame.key.get_pressed()[K_RIGHT]):
-                glTranslatef(-0.0001, 0, 0)
+                glTranslatef((xMax - xMin) / 100, 0, 0)
+            elif (pygame.key.get_pressed()[K_RIGHT]):
+                glTranslatef(-(xMax - xMin) / 100, 0, 0)
 
-            if(pygame.key.get_pressed()[K_UP]):
-                glTranslatef(0, -0.0001, 0)
-            elif(pygame.key.get_pressed()[K_DOWN]):
-                glTranslatef(0, 0.0001, 0)
+            if (pygame.key.get_pressed()[K_UP]):
+                glTranslatef(0, -(yMax - yMin) / 100, 0)
+            elif (pygame.key.get_pressed()[K_DOWN]):
+                glTranslatef(0, (yMax - yMin) / 100, 0)
 
             if(pygame.key.get_pressed()[K_x]):
                 glMatrixMode(GL_PROJECTION)
@@ -225,7 +250,7 @@ def main():
 
         glClearColor(0.5, 0.5, 0.5, 1)
 
-        input_thread = threading.Thread(target = InputHandler2D)
+        input_thread = threading.Thread(target = InputHandler3D)
         input_thread.start()
 
         xMin = -10
@@ -241,6 +266,8 @@ def main():
         glMatrixMode(GL_MODELVIEW)
 
         gluPerspective(0, display[0]/display[1], 0.01, 50)
+
+        glEnable(GL_DEPTH_TEST)
         
         while not quit_state:
             for event in pygame.event.get():
@@ -259,16 +286,14 @@ def main():
             elif (pygame.key.get_pressed()[K_DOWN]):
                 glTranslatef(0, (yMax - yMin) / 100, 0)
 
-            glMatrixMode(GL_MODELVIEW)
             if (pygame.key.get_pressed()[K_a]):
-                glRotatef(-0.1, 0, 1, 0)
+                glRotatef(1, 0, 1, 0)
             elif (pygame.key.get_pressed()[K_d]):
-                glRotatef(0.1, 0, 1, 0)
+                glRotatef(-1, 0, 1, 0)
             elif (pygame.key.get_pressed()[K_w]):
-                glRotatef(0.1, 1, 0, 0)
+                glRotatef(1, 1, 0, 0)
             elif (pygame.key.get_pressed()[K_s]):
-                glRotatef(-0.1, 1, 0, 0)
-            
+                glRotatef(-1, 1, 0, 0)
 
             if(pygame.key.get_pressed()[K_x]):
                 glMatrixMode(GL_PROJECTION)
@@ -294,6 +319,7 @@ def main():
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
             DrawOrigin3D()
             Draw3D()
+
             pygame.display.flip()
 
 main()

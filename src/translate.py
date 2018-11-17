@@ -52,9 +52,10 @@ def translate_2d(points, dx, dy):
         translated_point = []
         for tmE in transform_matrix:
             sum = 0
-            point.append(1) #Dummy element
+            dummyPoint = point.copy()
+            dummyPoint.append(1) #Dummy element
             for tmEVI, tmEVV in enumerate(tmE):
-                sum += tmEVV * point[tmEVI]
+                sum += tmEVV * dummyPoint[tmEVI]
             translated_point.append(sum)
         translated_point = translated_point[0:2] #Remove Dummy Element
         translated_points.append(translated_point)
@@ -71,20 +72,27 @@ def translate_2d(points, dx, dy):
 
 def translate_3d(points, dx, dy, dz):
     transform_matrix = [
-            [1,0,0,dx],
-            [0,1,0,dy],
-            [0,0,1,dz],
-            [0,0,0,1]]
+            [1, 0, 0, dx],
+            [0, 1, 0, dy],
+            [0, 0, 1, dz],
+            [0, 0, 0, 1]
+    ]
+
     translated_points = []
     
     for point in points:
         translated_point = []
-        point.append(1) #Dummy element
+        print(point)
+        dummyPoint = point.copy()
+        dummyPoint.append(1) #Dummy element
+        print(point)
         for tmE in transform_matrix:
             sum = 0
             for tmEVI, tmEVV in enumerate(tmE):
-                sum += tmEVV * point[tmEVI]
+                sum += tmEVV * dummyPoint[tmEVI]
             translated_point.append(sum)
+        
         translated_point = translated_point[0:3] #Remove Dummy Element
         translated_points.append(translated_point)
+
     return translated_points
