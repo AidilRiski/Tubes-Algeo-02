@@ -113,11 +113,18 @@ def Animate2D(currentPoints, targetPoints):
     global in_animation
     oldPoints = currentPoints.copy()
 
+    maxDistance = 0
+
     for cI, cPoint in enumerate(currentPoints):
-            Animation2D(cPoint, targetPoints[cI], oldPoints[cI])
+        if ((((cPoint[0] - targetPoints[cI][0]) ** 2) + ((cPoint[1] - targetPoints[cI][1]) ** 2)) ** (1.00 / 2)) > maxDistance:
+            maxDistance = ((((cPoint[0] - targetPoints[cI][0]) ** 2) + ((cPoint[1] - targetPoints[cI][1]) ** 2)) ** (1.00 / 2))
+
+    for cI, cPoint in enumerate(currentPoints):
+        if maxDistance > 0 :
+            Animation2D(cPoint, targetPoints[cI], oldPoints[cI], maxDistance)
 
 
-def Animation2D(currentPoint, targetPoint, oldPoint):
+def Animation2D(currentPoint, targetPoint, oldPoint, maxDistance):
     global in_animation
     global deltaTime
 
@@ -126,12 +133,12 @@ def Animation2D(currentPoint, targetPoint, oldPoint):
         targetPoint[1] - oldPoint[1],
     ]
 
-    length = ((directionVector[0] * directionVector[0]) + (directionVector[1] * directionVector[1]))**(1.0 / 2)
+    length = ((directionVector[0] ** 2) + (directionVector[1] ** 2)) ** (1.0 / 2)
 
     if length > 0 :
         directionVector = [
-            directionVector[0] / length,
-            directionVector[1] / length
+            directionVector[0] / maxDistance,
+            directionVector[1] / maxDistance
         ]
 
         length_vector = [
