@@ -53,7 +53,7 @@ in_animation = False
 deltaTime = 0
 tolerance = 0.01
 speed = 5 #PX / S
-rotation_speed = 2 #DG / S
+rotation_speed = 45 #DG / S
 
 is_rotation = False
 rotation_point2d = []
@@ -185,7 +185,7 @@ def AnimationRotational2D(currentPoints, targetPoints, rotation_point):
     rFlag = p_sum <= ((tolerance * 2) * len(currentPoints))
 
     if not rFlag :
-        currentPoints = rotate.rotate_2d(currentPoints, float(rotation_speed), rotation_point2d[0], rotation_point2d[1])
+        currentPoints = rotate.rotate_2d(currentPoints, float(rotation_speed) * deltaTime, rotation_point2d[0], rotation_point2d[1])
     else :
         currentPoints = targetPoints
         is_rotation = False
@@ -270,7 +270,7 @@ def AnimationRotational3D(currentPoints, targetPoints, rotation_point):
     rFlag = p_sum <= ((tolerance * 3) * len(currentPoints))
 
     if not rFlag :
-        currentPoints = rotate.rotate_3d(currentPoints, float(rotation_speed), rotation_point2d[0], rotation_point2d[1], rotation_point2d[2])
+        currentPoints = rotate.rotate_3d(currentPoints, float(rotation_speed) * deltaTime, rotation_point2d[0], rotation_point2d[1], rotation_point2d[2])
     else :
         currentPoints = targetPoints
         is_rotation = False
