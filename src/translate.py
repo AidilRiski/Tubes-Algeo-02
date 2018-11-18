@@ -82,10 +82,8 @@ def translate_3d(points, dx, dy, dz):
     
     for point in points:
         translated_point = []
-        print(point)
         dummyPoint = point.copy()
         dummyPoint.append(1) #Dummy element
-        print(point)
         for tmE in transform_matrix:
             sum = 0
             for tmEVI, tmEVV in enumerate(tmE):

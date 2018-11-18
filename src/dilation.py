@@ -71,4 +71,21 @@ def dilate_2d(points, factor_k):
 # didilatasi terhadap titik (0, 0, 0) dengan skala factor_k.
 # Bonus : Menampilkan animasi perpindahan.
 def dilate_3d(points, factor_k):
-    return 0
+    transformation_matrix = [
+        [factor_k, 0, 0],
+        [0, factor_k, 0],
+        [0, 0, factor_k]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
