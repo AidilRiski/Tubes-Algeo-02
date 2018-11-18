@@ -46,15 +46,20 @@ from pygame.locals import *
 # direfleksi terhadap titik (px, py).
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d(points, px, py):
+    transformation_matrix = [
+        [-1, 0],
+        [0, -1]
+    ]
     newPoints = []
 
     for point in points:
         newPoint = []
-        dx = px - point[0]
-        newPoint.append(point[0] + 2*dx)
-        dy = py - point[1]
-        newPoint.append(point[1] + 2*dy)
+        tx = point[0] - px
+        ty = point[1] - py
+        newPoint.append((tx * transformation_matrix[0][0] + ty * transformation_matrix[0][1]) + px)
+        newPoint.append((tx * transformation_matrix[1][0] + ty * transformation_matrix[1][1]) + py)
         newPoints.append(newPoint)
+
     return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
@@ -63,12 +68,19 @@ def reflect_2d(points, px, py):
 # direfleksi terhadap sumbu x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_x(points):
+    transformation_matrix = [
+        [1, 0],
+        [0, -1]
+    ]
     newPoints = []
 
     for point in points:
         newPoint = []
-        newPoint.append(point[0])
-        newPoint.append(-1*point[1])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -79,12 +91,20 @@ def reflect_2d_x(points):
 # direfleksi terhadap sumbu y.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_y(points):
+    transformation_matrix = [
+        [-1, 0],
+        [0, 1]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(-1*point[0])
-        newPoint.append(point[1])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -95,12 +115,20 @@ def reflect_2d_y(points):
 # direfleksi terhadap garis y = x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_xy_normal(points):
+    transformation_matrix = [
+        [0, 1],
+        [1, 0]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(point[1])
-        newPoint.append(point[0])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -111,12 +139,20 @@ def reflect_2d_xy_normal(points):
 # direfleksi terhadap garis y = -x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_2d_xy_invert(points):
+    transformation_matrix = [
+        [0, -1],
+        [-1, 0]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(-1*point[1])
-        newPoint.append(-1*point[0])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -128,16 +164,22 @@ def reflect_2d_xy_invert(points):
 # direfleksi terhadap titik (px, py, pz).
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d(points, px, py, pz):
+    transformation_matrix = [
+        [-1, 0, 0],
+        [0, -1, 0],
+        [0, 0, -1]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        dx = px - point[0]
-        newPoint.append(point[0] + 2*dx)
-        dy = py - point[1]
-        newPoint.append(point[1] + 2*dy)
-        dz = pz - point[2]
-        newPoint.append(point[2] + 2*dz)
+        tx = point[0] - px
+        ty = point[1] - py
+        tz = point[2] - pz
+        newPoint.append((tx * transformation_matrix[0][0] + ty * transformation_matrix[0][1]) + tz * transformation_matrix[0][2] + px)
+        newPoint.append((tx * transformation_matrix[1][0] + ty * transformation_matrix[1][1]) + tz * transformation_matrix[1][2] + py)
+        newPoint.append((tx * transformation_matrix[2][0] + ty * transformation_matrix[2][1]) + tz * transformation_matrix[2][2] + px)
         newPoints.append(newPoint)
 
     return newPoints
@@ -148,13 +190,21 @@ def reflect_3d(points, px, py, pz):
 # direfleksi terhadap sumbu x.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_x(points):
+    transformation_matrix = [
+        [ 1, 0, 0],
+        [0, -1, 0],
+        [0, 0, -1]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(point[0])
-        newPoint.append(-1*point[1])
-        newPoint.append(-1*point[2])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -165,13 +215,21 @@ def reflect_3d_x(points):
 # direfleksi terhadap sumbu y.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_y(points):
+    transformation_matrix = [
+        [-1, 0, 0],
+        [0,  1, 0],
+        [0, 0, -1]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(-1*point[0])
-        newPoint.append(point[1])
-        newPoint.append(-1*point[2])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints
@@ -182,13 +240,21 @@ def reflect_3d_y(points):
 # direfleksi terhadap sumbu z.
 # Bonus : Menampilkan animasi perpindahan.
 def reflect_3d_z(points):
+    transformation_matrix = [
+        [-1, 0, 0],
+        [0, -1, 0],
+        [0, 0,  1]
+    ]
+    
     newPoints = []
 
-    for point in points :
+    for point in points:
         newPoint = []
-        newPoint.append(-1*point[0])
-        newPoint.append(-1*point[1])
-        newPoint.append(point[2])
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
         newPoints.append(newPoint)
 
     return newPoints

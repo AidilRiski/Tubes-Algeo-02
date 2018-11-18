@@ -462,9 +462,12 @@ def InputHandler3D():
         if user_input_Arr[0] == 'dilate':
             target3D = dilation.dilate_3d(titik3D, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'rotate' :
-            titik3D = rotate.rotate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4]))
-            rotation_point3d = [float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4])]
-            is_rotation = True
+            if user_input_Arr[1] == 'x':
+                target3D = rotate.rotate_3d_x(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                target3D = rotate.rotate_3d_y(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                target3D = rotate.rotate_3d_z(titik3D, float(user_input_Arr[2]))
         elif user_input_Arr[0] == 'translate':
             target3D = translate.translate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
         elif user_input_Arr[0] == 'reflect':

@@ -67,9 +67,79 @@ def rotate_2d(points, degree, px, py):
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter degree yang merupakan sudut
-# dalam derajat, px, py, dan pz yang merupakan suatu titik pada koordinat kartesius 3 dimensi.
+# dalam derajat.
 # Fungsi ini mengembalikan nilai dari kumpulan titik-titik pada parameter yang sudah
-# dirotasi berlawanan jarum jam sebesar degree (dalam derajat) terhadap titik (px, py, pz).
+# dirotasi berlawanan jarum jam sebesar degree (dalam derajat) terhadap sumbu x.
 # Bonus : Menampilkan animasi perpindahan.
-def rotate_3d(points, degree, px, py, pz):
-    return 0
+def rotate_3d_x(points, degree):
+    transformation_matrix = [
+        [1, 0, 0],
+        [0, math.cos(math.radians(degree)), -1*math.sin(math.radians(degree))],
+        [0, math.sin(math.radians(degree)), math.cos(math.radians(degree))]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
+
+# Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
+# pada bidang kartesian 3 dimensi, lalu menerima parameter degree yang merupakan sudut
+# dalam derajat.
+# Fungsi ini mengembalikan nilai dari kumpulan titik-titik pada parameter yang sudah
+# dirotasi berlawanan jarum jam sebesar degree (dalam derajat) terhadap sumbu y.
+# Bonus : Menampilkan animasi perpindahan.
+def rotate_3d_y(points, degree):
+    transformation_matrix = [
+        [math.cos(math.radians(degree)), 0, math.sin(math.radians(degree))],
+        [0, 1, 0],
+        [-1*math.sin(math.radians(degree)), 0, math.cos(math.radians(degree))]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
+
+# Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
+# pada bidang kartesian 3 dimensi, lalu menerima parameter degree yang merupakan sudut
+# dalam derajat.
+# Fungsi ini mengembalikan nilai dari kumpulan titik-titik pada parameter yang sudah
+# dirotasi berlawanan jarum jam sebesar degree (dalam derajat) terhadap sumbu z.
+# Bonus : Menampilkan animasi perpindahan.
+def rotate_3d_z(points, degree):
+    transformation_matrix = [
+        [math.cos(math.radians(degree)), -1 * math.sin(math.radians(degree)), 0],
+        [math.sin(math.radians(degree)), math.cos(math.radians(degree)), 0],
+        [0, 0, 1]
+        
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+        
+    return newPoints
