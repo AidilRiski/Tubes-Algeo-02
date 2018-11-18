@@ -97,9 +97,9 @@ def shear_2d_y(points, factor_k):
 # Bonus : Menampilkan animasi perpindahan.
 def shear_3d_x(points, factor_k):
     transformation_matrix = [
-        [1, factor_k, factor_k],
-        [0, 1, 0],
-        [0, 0, 1]
+        [1, 0, 0],
+        [factor_k, 1, 0],
+        [factor_k, 0, 1]
     ]
     
     newPoints = []
@@ -123,9 +123,9 @@ def shear_3d_x(points, factor_k):
 # Bonus : Menampilkan animasi perpindahan.
 def shear_3d_y(points, factor_k):
     transformation_matrix = [
-        [1, 0, 0],
-        [factor_k, 1, factor_k],
-        [0, 0, 1]
+        [1, factor_k, 0],
+        [0, 1, 0],
+        [0, factor_k, 1]
     ]
     
     newPoints = []
@@ -149,9 +149,9 @@ def shear_3d_y(points, factor_k):
 # Bonus : Menampilkan animasi perpindahan.
 def shear_3d_z(points, factor_k):
     transformation_matrix = [
-        [1, 0, 0],
-        [0, 1, 0],
-        [factor_k, factor_k, 1]
+        [1, 0, factor_k],
+        [0, 1, factor_k],
+        [0, 0, 1]
     ]
     
     newPoints = []

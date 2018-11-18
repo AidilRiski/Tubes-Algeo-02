@@ -14,9 +14,11 @@ import rotate
 import translate
 import shear
 import stretch
+import custom
 
 titik2D = []
 target2D = []
+titik2DInitial = []
 
 
 #PERHATIKAN URUTAN
@@ -32,6 +34,7 @@ titik3D = [
 ]
 
 target3D = []
+titik3DInitial = []
 
 faces = [
     
@@ -330,18 +333,20 @@ def AnimationRotational3D(currentPoints, targetPoints, rotation_point):
     return currentPoints
     
 def InputHandler2D():
-    global quit_state
     global titik2D
     global target2D
+    global titik2DInitial
 
     global is_rotation
     global rotation_point2d
 
+    global quit_state
+    
     user_input = ''
-    user_input_Arr = user_input.split()
     while not user_input == 'quit':
         user_input = input('Input: ')
         user_input_Arr = user_input.split()
+
         if user_input_Arr[0] == 'dilate':
             target2D = dilation.dilate_2d(titik2D, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'reflect':
@@ -371,13 +376,78 @@ def InputHandler2D():
                 target2D = stretch.stretch_2d_x(titik2D, float(user_input_Arr[2]))
             elif user_input_Arr[1] == 'y':
                 target2D = stretch.stretch_2d_y(titik2D, float(user_input_Arr[2]))
-
+        elif user_input_Arr[0] == 'custom':
+            target2D = custom.custom_2d(
+                titik2D,
+                float(user_input_Arr[1]), float(user_input_Arr[2]),
+                float(user_input_Arr[3]), float(user_input_Arr[4])
+            )
+        elif user_input_Arr[0] == 'reset':
+            target2D = titik2DInitial.copy()
+        elif user_input_Arr[0] == 'multiple':
+            command_array = []
+            n = int(input('Jumlah Perintah: '))
+            for i in range(0, n):
+                command = input('Perintah: ')
+                command_array.append(command)
+            target2D = CommandHandler2D(command_array)
+        elif user_input_Arr[0] == 'quit':
+            pass
+        else:
+            print('Perintah tidak valid!')
+        
     quit_state = True
+
+def CommandHandler2D(command_list):
+    global titik2D
+
+    newMatrix = titik2D
+
+    for command in command_list:
+        user_input_Arr = command.split()
+        if user_input_Arr[0] == 'dilate':
+            newMatrix = dilation.dilate_2d(newMatrix, float(user_input_Arr[1]))
+        elif user_input_Arr[0] == 'reflect':
+            if user_input_Arr[1] == 'y=x':
+                newMatrix = reflect.reflect_2d_xy_normal(newMatrix)
+            elif user_input_Arr[1] == 'y=-x':
+                newMatrix = reflect.reflect_2d_xy_invert(newMatrix)
+            elif user_input_Arr[1] == 'x':
+                newMatrix = reflect.reflect_2d_x(newMatrix)
+            elif user_input_Arr[1] == 'y':
+                newMatrix = reflect.reflect_2d_y(newMatrix)
+            else:
+                newMatrix = reflect.reflect_2d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'rotate' :
+            newMatrix = rotate.rotate_2d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+        elif user_input_Arr[0] == 'translate':
+            newMatrix = translate.translate_2d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'shear':
+            if user_input_Arr[1] == 'x':
+                newMatrix = shear.shear_2d_x(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                newMatrix = shear.shear_2d_y(newMatrix, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'stretch':
+            if user_input_Arr[1] == 'x':
+                newMatrix = stretch.stretch_2d_x(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                newMatrix = stretch.stretch_2d_y(newMatrix, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'custom':
+            newMatrix = custom.custom_2d(
+                newMatrix,
+                float(user_input_Arr[1]), float(user_input_Arr[2]),
+                float(user_input_Arr[3]), float(user_input_Arr[4])
+            )
+        else:
+            print('Perintah tidak valid!')
+    
+    return newMatrix
 
 def InputHandler3D():
     global quit_state
     global titik3D
     global target3D
+    global titik3DInitial
 
     global is_rotation
     global rotation_point3d
@@ -416,9 +486,74 @@ def InputHandler3D():
                 target3D = stretch.stretch_3d_y(titik3D, float(user_input_Arr[2]))
             elif user_input_Arr[1] == 'z':
                 target3D = stretch.stretch_3d_z(titik3D, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'custom':
+            target3D = custom.custom_3d(
+                titik3D,
+                float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]),
+                float(user_input_Arr[4]), float(user_input_Arr[5]), float(user_input_Arr[6]),
+                float(user_input_Arr[7]), float(user_input_Arr[8]), float(user_input_Arr[9])
+            )
+        elif user_input_Arr[0] == 'reset':
+            target3D = titik3DInitial.copy()
+        elif user_input_Arr[0] == 'multiple':
+            command_array = []
+            n = int(input('Jumlah Perintah: '))
+            for i in range(0, n):
+                command = input('Perintah: ')
+                command_array.append(command)
+            target3D = CommandHandler3D(command_array)
+        elif user_input_Arr[0] == 'quit':
+            pass
+        else:
+            print('Perintah tidak valid!')
             
-
     quit_state = True
+
+def CommandHandler3D(command_list):
+    global titik3D
+
+    newMatrix = titik3D
+
+    for command in command_list:
+        user_input_Arr = command.split()
+        if user_input_Arr[0] == 'dilate':
+            newMatrix = dilation.dilate_3d(newMatrix, float(user_input_Arr[1]))
+        elif user_input_Arr[0] == 'rotate' :
+            newMatrix = rotate.rotate_3d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4]))
+        elif user_input_Arr[0] == 'translate':
+            newMatrix = translate.translate_3d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+        elif user_input_Arr[0] == 'reflect':
+            if user_input_Arr[1] == 'x':
+                newMatrix = reflect.reflect_3d_x(newMatrix)
+            elif user_input_Arr[1] == 'y':
+                newMatrix = reflect.reflect_3d_y(newMatrix)
+            elif user_input_Arr[1] == 'z':
+                newMatrix = reflect.reflect_3d_z(newMatrix)
+        elif user_input_Arr[0] == 'shear':
+            if user_input_Arr[1] == 'x':
+                newMatrix = shear.shear_3d_x(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                newMatrix = shear.shear_3d_y(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                newMatrix = shear.shear_3d_z(newMatrix, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'stretch':
+            if user_input_Arr[1] == 'x':
+                newMatrix = stretch.stretch_3d_x(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                newMatrix = stretch.stretch_3d_y(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                newMatrix = stretch.stretch_3d_z(newMatrix, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'custom':
+            newMatrix = custom.custom_3d(
+                newMatrix,
+                float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]),
+                float(user_input_Arr[4]), float(user_input_Arr[5]), float(user_input_Arr[6]),
+                float(user_input_Arr[7]), float(user_input_Arr[8]), float(user_input_Arr[9])
+            )
+        else:
+            print('Perintah tidak valid!')
+    
+    return newMatrix
 
 def main():
     global quit_state
@@ -427,9 +562,11 @@ def main():
 
     global titik2D
     global target2D
+    global titik2DInitial
 
     global titik3D
     global target3D
+    global titik3DInitial
 
     global in_animation
     global is_rotation
@@ -451,7 +588,13 @@ def main():
             input_y = float(input_y)
             titik2D.append([input_x, input_y])
 
-        target2D = titik2D
+        for point in titik2D:
+            nP = []
+            for e in point:
+                nP.append(e)
+            titik2DInitial.append(nP)
+
+        target2D = titik2D.copy()
             
         pygame.init()
         display = (800, 600)
@@ -524,9 +667,6 @@ def main():
             glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
             DrawOrigin2D()
 
-            #print(deltaTime)
-            #titik2D[0][0] += speed * deltaTime
-
             in_animation = not (titik2D == target2D)
 
             if in_animation:
@@ -539,7 +679,15 @@ def main():
             pygame.display.flip()
                 
     elif program_mode == '3D':
-        target3D = titik3D
+
+        for point in titik3D:
+            nP = []
+            for e in point:
+                nP.append(e)
+
+            titik3DInitial.append(nP)
+
+        target3D = titik3D.copy()
 
         pygame.init()
         display = (800, 600)
