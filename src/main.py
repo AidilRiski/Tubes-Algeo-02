@@ -12,6 +12,8 @@ import dilation
 import reflect
 import rotate
 import translate
+import shear
+import stretch
 
 titik2D = []
 target2D = []
@@ -60,26 +62,76 @@ rotation_point2d = []
 rotation_point3d = []
 
 def DrawOrigin2D():
+    glPushAttrib(GL_ENABLE_BIT)
+
+    glLineStipple(1, 10)
+    glEnable(GL_LINE_STIPPLE)
+
     glBegin(GL_LINES)
+
+    glColor3f(1, 0, 0)
+    glVertex2fv([-500, 0])
+    glVertex2fv([0, 0])
+
+    glColor3f(0, 1, 0)
+    glVertex2fv([0, -500])
+    glVertex2fv([0, 0])
+
+    glEnd()
+
+    glPopAttrib()
+
+    glBegin(GL_LINES)
+
     glColor3f(1, 0, 0)
     glVertex2fv([500, 0])
-    glVertex2fv([-500, 0])
+    glVertex2fv([0, 0])
+
     glColor3f(0, 1, 0)
     glVertex2fv([0, 500])
-    glVertex2fv([0, -500])
+    glVertex2fv([0, 0])
+
     glEnd()
 
 def DrawOrigin3D():
+
+    glPushAttrib(GL_ENABLE_BIT)
+
+    glLineStipple(1, 10)
+    glEnable(GL_LINE_STIPPLE)
+
     glBegin(GL_LINES)
+
+    glColor3f(1, 0, 0)
+    glVertex3fv([-500, 0, 0])
+    glVertex3fv([0, 0, 0])
+
+    glColor3f(0, 1, 0)
+    glVertex3fv([0, -500, 0])
+    glVertex3fv([0, 0, 0])
+
+    glColor3f(0, 0, 1)
+    glVertex3fv([0, 0, -500])
+    glVertex3fv([0, 0, 0])
+
+    glEnd()
+
+    glPopAttrib()
+
+    glBegin(GL_LINES)
+
     glColor3f(1, 0, 0)
     glVertex3fv([500, 0, 0])
-    glVertex3fv([-500, 0, 0])
+    glVertex3fv([0, 0, 0])
+
     glColor3f(0, 1, 0)
     glVertex3fv([0, 500, 0])
-    glVertex3fv([0, -500, 0])
+    glVertex3fv([0, 0, 0])
+
     glColor3f(0, 0, 1)
     glVertex3fv([0, 0, 500])
-    glVertex3fv([0, 0, -500])
+    glVertex3fv([0, 0, 0])
+
     glEnd()
 
 def Draw2D(points):
@@ -309,6 +361,16 @@ def InputHandler2D():
             is_rotation = True
         elif user_input_Arr[0] == 'translate':
             target2D = translate.translate_2d(titik2D, float(user_input_Arr[1]), float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'shear':
+            if user_input_Arr[1] == 'x':
+                target2D = shear.shear_2d_x(titik2D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                target2D = shear.shear_2d_y(titik2D, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'stretch':
+            if user_input_Arr[1] == 'x':
+                target2D = stretch.stretch_2d_x(titik2D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                target2D = stretch.stretch_2d_y(titik2D, float(user_input_Arr[2]))
 
     quit_state = True
 
@@ -316,6 +378,9 @@ def InputHandler3D():
     global quit_state
     global titik3D
     global target3D
+
+    global is_rotation
+    global rotation_point3d
 
     user_input = ''
     user_input_Arr = user_input.split()
@@ -326,8 +391,31 @@ def InputHandler3D():
             target3D = dilation.dilate_3d(titik3D, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'rotate' :
             titik3D = rotate.rotate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4]))
+            rotation_point3d = [float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4])]
+            is_rotation = True
         elif user_input_Arr[0] == 'translate':
             target3D = translate.translate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
+        elif user_input_Arr[0] == 'reflect':
+            if user_input_Arr[1] == 'x':
+                target3D = reflect.reflect_3d_x(titik3D)
+            elif user_input_Arr[1] == 'y':
+                target3D = reflect.reflect_3d_y(titik3D)
+            elif user_input_Arr[1] == 'z':
+                target3D = reflect.reflect_3d_z(titik3D)
+        elif user_input_Arr[0] == 'shear':
+            if user_input_Arr[1] == 'x':
+                target3D = shear.shear_3d_x(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                target3D = shear.shear_3d_y(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                target3D = shear.shear_3d_z(titik3D, float(user_input_Arr[2]))
+        elif user_input_Arr[0] == 'stretch':
+            if user_input_Arr[1] == 'x':
+                target3D = stretch.stretch_3d_x(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                target3D = stretch.stretch_3d_y(titik3D, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                target3D = stretch.stretch_3d_z(titik3D, float(user_input_Arr[2]))
             
 
     quit_state = True

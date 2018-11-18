@@ -46,7 +46,23 @@ from pygame.locals import *
 # diubah sesuai matriks transformasi.
 # Bonus : Menampilkan animasi perpindahan.
 def custom_2d(points, m1, m2, m3, m4):
-    return 0
+    transformation_matrix = [
+        [float(m1), float(m2)],
+        [float(m3), float(m4)]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
 
 # Fungsi ini menerima sebuah array 2 dimensi, yang merupakan kumpulan dari titik-titik
 # pada bidang kartesian 3 dimensi, lalu menerima parameter yang merupakan matriks
@@ -54,5 +70,22 @@ def custom_2d(points, m1, m2, m3, m4):
 # Fungsi ini mengembalikan nilai dari kumpulan titik-titik pada parameter yang sudah
 # diubah sesuai matriks transformasi.
 # Bonus : Menampilkan animasi perpindahan.
-def custom_3d(points, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16):
-    return 0
+def custom_3d(points, m1, m2, m3, m4, m5, m6, m7, m8, m9):
+    transformation_matrix = [
+        [float(m1), float(m2), float(m3)],
+        [float(m4), float(m5), float(m6)],
+        [float(m7), float(m8), float(m9)]
+    ]
+    
+    newPoints = []
+
+    for point in points:
+        newPoint = []
+        for tmE in transformation_matrix:
+            sum = 0
+            for tmEVI, tmEVV in enumerate(tmE):
+                sum += tmEVV * point[tmEVI]
+            newPoint.append(sum)
+        newPoints.append(newPoint)
+
+    return newPoints
