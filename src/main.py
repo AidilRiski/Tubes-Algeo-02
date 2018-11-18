@@ -1,3 +1,5 @@
+import os
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
@@ -343,7 +345,7 @@ def InputHandler2D():
     global quit_state
     
     user_input = ''
-    while not user_input == 'quit':
+    while not user_input == 'exit':
         user_input = input('Input: ')
         user_input_Arr = user_input.split()
 
@@ -391,7 +393,7 @@ def InputHandler2D():
                 command = input('Perintah: ')
                 command_array.append(command)
             target2D = CommandHandler2D(command_array)
-        elif user_input_Arr[0] == 'quit':
+        elif user_input_Arr[0] == 'exit':
             pass
         else:
             print('Perintah tidak valid!')
@@ -454,7 +456,7 @@ def InputHandler3D():
 
     user_input = ''
     user_input_Arr = user_input.split()
-    while not user_input == 'quit':
+    while not user_input == 'exit':
         user_input = input('Input: ')
         user_input_Arr = user_input.split()
         if user_input_Arr[0] == 'dilate':
@@ -502,7 +504,7 @@ def InputHandler3D():
                 command = input('Perintah: ')
                 command_array.append(command)
             target3D = CommandHandler3D(command_array)
-        elif user_input_Arr[0] == 'quit':
+        elif user_input_Arr[0] == 'exit':
             pass
         else:
             print('Perintah tidak valid!')
@@ -555,6 +557,9 @@ def CommandHandler3D(command_list):
     
     return newMatrix
 
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
+
 def main():
     global quit_state
     global program_mode
@@ -571,7 +576,43 @@ def main():
     global in_animation
     global is_rotation
 
-    program_mode = input('2D / 3D: ')
+    cls()
+
+    print("  ________  ___________   _____    ____  ___________ ___    ____                                   ")
+    print(" /_  __/ / / / ____/   | / ___/   / __ )/ ____/ ___//   |  / __ \                                  ")
+    print("  / / / / / / / __/ /| | \__ \   / __  / __/  \__ \/ /| | / /_/ /                                  ")
+    print(" / / / /_/ / /_/ / ___ |___/ /  / /_/ / /___ ___/ / ___ |/ _, _/                                   ")
+    print("/_/ _\\\\___/\\\\___/_/  \\\\\\\\\\__/ _\\\\\\__\\\\\\____\\\\\\\\__/_/__\\\\\\\\\\_\\\\\\_____  __  ___________________  ____")
+    print("   /   |  / /       / /   |  / __ )/   |  / __ \   / ____/ ____/ __ \/  |/  / ____/_  __/ __ \/  _/")
+    print("  / /| | / /   __  / / /| | / __  / /| | / /_/ /  / / __/ __/ / / / / /|_/ / __/   / / / /_/ // /  ")
+    print(" / ___ |/ /___/ /_/ / ___ |/ /_/ / ___ |/ _, _/  / /_/ / /___/ /_/ / /  / / /___  / / / _, _// /   ")
+    print("/_/  |_/_____/\____/_/  |_/_____/_/  |_/_/ |_|   \____/_____/\____/_/  /_/_____/ /_/ /_/ |_/___/   ")
+    print("                                                                                                   ")
+    print('#=================================================================================================#')
+    print('#	Tugas Besar - Aljabar Geometri								  #')
+    print('#	"Simulasi Transformasi Linier pada Bidang 2D dan 3D dengan Menggunakan OpenGL API"	  #')
+    print('#												  #')
+    print('#	Bahasa Pemrograman yang digunakan: Python						  #')
+    print('#-------------------------------------------------------------------------------------------------#')
+    print('#	Anggota Kelompok:									  #')
+    print('#												  #')
+    print('#	Abda Shaffan Diva	-	13517021						  #')
+    print('#	Aidil Rezjki S		-	13517070						  #')
+    print('#	Taufikurrahman Anwar	-	13517074						  #')
+    print('#=================================================================================================#')
+    print('#	Kontrol Kamera										  #')
+    print('#												  #')
+    print('#		1. W, S		:	Rotasi kamera terhadap sumbu x.	(Hanya pada mode 3D).	  #')
+    print('#		2. A, D		:	Rotasi kamera terhadap sumbu y.	(Hanya pada mode 3D).	  #')
+    print('#		3. Z, X		:	Melakukan zoom pada kamera.				  #')
+    print('#		4. Arrow Keys	:	Melakukan pan pada kamera.				  #')
+    print('#=================================================================================================#')
+    print('#	Silahkan baca README.txt untuk bantuan.							  #')
+    print('#=================================================================================================#')
+    print()
+
+    print('Pilih mode program (2D / 3D)!')
+    program_mode = input('Mode Program: ')
     jumlah_titik = 0
 
     while program_mode != '2D' and program_mode != '3D':
@@ -583,7 +624,7 @@ def main():
         jumlah_titik = int(input('Jumlah titik: '))
         
         for i in range(0, jumlah_titik):
-            input_x, input_y = input().split()
+            input_x, input_y = input('Titik ke ' + str(i + 1) + ': ').split()
             input_x = float(input_x)
             input_y = float(input_y)
             titik2D.append([input_x, input_y])
