@@ -140,9 +140,16 @@
 #			Melakukan translasi objek dengan menggeser sesuai dengan dx, dy. dan dz.#
 #		2. dilate <k>									#
 #			Melakukan dilatasi objek dengan faktor k.				#
-#		3. rotate <deg> <a> <b> <c>							#
-#			Melakukan rotasi pada objek sebanyak deg (dalam derajat) terhadap	#
-#			titik (a, b, c).							#
+#		3. rotate <param> <deg>								#
+#			Parameter x:								#
+#				Melakukan rotasi pada objek sebanyak deg (dalam derajat)	#
+#			terhadap sumbu x.							#
+#			Parameter y:								#
+#				Melakukan rotasi pada objek sebanyak deg (dalam derajat)	#
+#			terhadap sumbu y.							#
+#			Parameter z:								#
+#				Melakukan rotasi pada objek sebanyak deg (dalam derajat)	#
+#			terhadap sumbu z.							#
 #		4. reflect <param>								#
 #			Melakukan pencerminan objek terhadap beberapa hal sesuai parameter.	#
 #			Parameter x:								#

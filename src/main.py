@@ -37,6 +37,7 @@ titik3D = [
 
 target3D = []
 titik3DInitial = []
+axis_tag = ''
 
 faces = [
     
@@ -64,7 +65,6 @@ rotation_speed = 45 #DG / S
 
 is_rotation = False
 rotation_point2d = []
-rotation_point3d = []
 
 def DrawOrigin2D():
     glPushAttrib(GL_ENABLE_BIT)
@@ -232,7 +232,6 @@ def AnimationRotational2D(currentPoints, targetPoints, rotation_point):
 
     global is_rotation
     global rotation_speed
-    global rotation_point2d
 
     p_sum = 0
 
@@ -242,7 +241,7 @@ def AnimationRotational2D(currentPoints, targetPoints, rotation_point):
     rFlag = p_sum <= ((tolerance * 2) * len(currentPoints))
 
     if not rFlag :
-        currentPoints = rotate.rotate_2d(currentPoints, float(rotation_speed) * deltaTime, rotation_point2d[0], rotation_point2d[1])
+        currentPoints = rotate.rotate_2d(currentPoints, float(rotation_speed) * deltaTime, rotation_point[0], rotation_point[1])
     else :
         currentPoints = targetPoints
         is_rotation = False
@@ -309,7 +308,7 @@ def Animation3D(currentPoint, targetPoint, oldPoint, maxDistance):
         else:
             currentPoint[2] += directionVector[2] * (float(speed) * deltaTime)
 
-def AnimationRotational3D(currentPoints, targetPoints, rotation_point):
+def AnimationRotational3D(currentPoints, targetPoints, axis_tag):
     global in_animation
     global deltaTime
 
@@ -317,7 +316,6 @@ def AnimationRotational3D(currentPoints, targetPoints, rotation_point):
 
     global is_rotation
     global rotation_speed
-    global rotation_point3d
 
     p_sum = 0
 
@@ -327,7 +325,14 @@ def AnimationRotational3D(currentPoints, targetPoints, rotation_point):
     rFlag = p_sum <= ((tolerance * 3) * len(currentPoints))
 
     if not rFlag :
-        currentPoints = rotate.rotate_3d(currentPoints, float(rotation_speed) * deltaTime, rotation_point2d[0], rotation_point2d[1], rotation_point2d[2])
+        if axis_tag == 'x':
+            currentPoints = rotate.rotate_3d_x(currentPoints, float(rotation_speed) * deltaTime)
+        elif axis_tag == 'y':
+            currentPoints = rotate.rotate_3d_y(currentPoints, float(rotation_speed) * deltaTime)
+        elif axis_tag == 'z':
+            currentPoints = rotate.rotate_3d_z(currentPoints, float(rotation_speed) * deltaTime)
+        else:
+            print('ERROR: TAG NOT VALID')
     else :
         currentPoints = targetPoints
         is_rotation = False
@@ -447,12 +452,13 @@ def CommandHandler2D(command_list):
 
 def InputHandler3D():
     global quit_state
+
     global titik3D
     global target3D
     global titik3DInitial
+    global axis_tag
 
     global is_rotation
-    global rotation_point3d
 
     user_input = ''
     user_input_Arr = user_input.split()
@@ -463,11 +469,15 @@ def InputHandler3D():
             target3D = dilation.dilate_3d(titik3D, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'rotate' :
             if user_input_Arr[1] == 'x':
+                axis_tag = 'x'
                 target3D = rotate.rotate_3d_x(titik3D, float(user_input_Arr[2]))
             elif user_input_Arr[1] == 'y':
+                axis_tag = 'y'
                 target3D = rotate.rotate_3d_y(titik3D, float(user_input_Arr[2]))
             elif user_input_Arr[1] == 'z':
+                axis_tag = 'z'
                 target3D = rotate.rotate_3d_z(titik3D, float(user_input_Arr[2]))
+            is_rotation = True
         elif user_input_Arr[0] == 'translate':
             target3D = translate.translate_3d(titik3D, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
         elif user_input_Arr[0] == 'reflect':
@@ -524,7 +534,12 @@ def CommandHandler3D(command_list):
         if user_input_Arr[0] == 'dilate':
             newMatrix = dilation.dilate_3d(newMatrix, float(user_input_Arr[1]))
         elif user_input_Arr[0] == 'rotate' :
-            newMatrix = rotate.rotate_3d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]), float(user_input_Arr[4]))
+            if user_input_Arr[1] == 'x':
+                newMatrix = rotate.rotate_3d_x(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'y':
+                newMatrix = rotate.rotate_3d_y(newMatrix, float(user_input_Arr[2]))
+            elif user_input_Arr[1] == 'z':
+                newMatrix = rotate.rotate_3d_z(newMatrix, float(user_input_Arr[2]))
         elif user_input_Arr[0] == 'translate':
             newMatrix = translate.translate_3d(newMatrix, float(user_input_Arr[1]), float(user_input_Arr[2]), float(user_input_Arr[3]))
         elif user_input_Arr[0] == 'reflect':
@@ -571,6 +586,7 @@ def main():
     global titik2D
     global target2D
     global titik2DInitial
+    global rotation_point2d
 
     global titik3D
     global target3D
@@ -820,7 +836,7 @@ def main():
 
             if in_animation:
                 if is_rotation:
-                    titik3D = AnimationRotational3D(titik3D, target3D, rotation_point3d)
+                    titik3D = AnimationRotational3D(titik3D, target3D, axis_tag)
                 else:
                     Animate3D(titik3D, target3D)
 
